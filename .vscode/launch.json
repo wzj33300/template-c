@@ -16,7 +16,7 @@
                 "pause"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${fileDirname}",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
