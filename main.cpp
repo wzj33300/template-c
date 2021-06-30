@@ -1,6 +1,11 @@
 #include <iostream>
+#include "main.hpp"
+
+using namespace std;
 
 int main() {
-	std::cout << "Hello, World!" << std::endl;
-	return 0;
+	MyStack::Stack<int> st(1000);
+	st.push(1);
+	st.push(2);
+	cout << st.top();
 }
