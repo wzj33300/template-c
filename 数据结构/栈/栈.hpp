@@ -1,9 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <stack>
-
-using namespace std;
-
 namespace MyStack {
 	template<class T>
 	struct Stack {
