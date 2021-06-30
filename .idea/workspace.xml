@@ -11,11 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="098063f8-eaff-4529-9a93-8090c5135b9b" name="默认变更列表" comment="">
-      <change afterPath="$PROJECT_DIR$/数据结构/队/队.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/数据结构/栈/栈.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/数据结构/栈/栈.hpp" afterDir="false" />
-    </list>
+    <list default="true" id="098063f8-eaff-4529-9a93-8090c5135b9b" name="默认变更列表" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,7 +79,7 @@
       <updated>1625017719140</updated>
       <workItem from="1625017720884" duration="3125000" />
       <workItem from="1625020926737" duration="4414000" />
-      <workItem from="1625034726622" duration="627000" />
+      <workItem from="1625034726622" duration="876000" />
     </task>
     <servers />
   </component>
