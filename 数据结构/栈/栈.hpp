@@ -1,3 +1,4 @@
+#include <cassert>
 namespace MyStack {
 	template<class T>
 	struct Stack {
@@ -16,16 +17,12 @@ namespace MyStack {
 		}
 
 		void pop() {
-			if (empty()) {
-				throw "stack is empty!!!";
-			}
+			assert(!empty());
 			--len;
 		}
 
 		void push(T data) {
-			if (len == maxSize) {
-				throw "stack is full!!!";
-			}
+			assert(len != maxSize);
 			a[len++] = data;
 		}
 
