@@ -1,4 +1,7 @@
+#define NDEBUG 0
+
 #include <cassert>
+
 namespace MyStack {
 	template<class T>
 	struct Stack {
