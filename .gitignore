@@ -1,7 +1,7 @@
 .vscode
 *.exe
 CMakeLists.txt
-cmake-build-debug
-.idea
+/cmake-build-debug/
+/.idea/
 main.cpp
 main.hpp

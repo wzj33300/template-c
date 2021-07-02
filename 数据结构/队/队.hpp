@@ -1,3 +1,5 @@
+#define NDEBUG 0
+
 #include <cassert>
 
 namespace MyQueue {
@@ -17,7 +19,7 @@ namespace MyQueue {
 			delete a;
 		}
 
-		Queue<T>& operator=(const Queue<T>& other) {
+		Queue<T> &operator=(const Queue<T> &other) {
 			maxSize = other.maxSize;
 			a = other.a;
 			head = other.head;
@@ -35,11 +37,11 @@ namespace MyQueue {
 			tail = (tail + 1) % maxSize;
 		}
 
-		T& front() {
+		T &front() {
 			return a[head];
 		}
 
-		T& back() {
+		T &back() {
 			return a[tail];
 		}
 

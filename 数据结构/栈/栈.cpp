@@ -1,6 +1,9 @@
+#define NDEBUG 0
+
 #include <cassert>
+
 namespace MyStack {
-	template<class T>
+	template<class T, class Container = MyArray::Array<T> >
 	struct Stack {
 		int maxSize;
 		T *a;
