@@ -1,25 +1,13 @@
 #include <iostream>
-#include <queue>
+#include "main.hpp"
 
 using namespace std;
+using namespace MySegmentTree;
 
 int main() {
-	int tot, outNum, nowNum = 1;
-	queue<int> q;
-	cin >> tot >> outNum;                        //读取数据
-	for (int i = 1; i <= tot; i++)q.push(i);    //初始化队列
-	while (!q.empty())                    //在队列不为空时继续模拟
-	{
-		if (nowNum == outNum) {
-			cout << q.front() << " ";    //打印出局的人的编号
-			q.pop();                    //出局
-			nowNum = 1;                    //初始化现在的数字
-		} else {
-			nowNum++;
-			q.push(q.front());            //排至队尾
-			q.pop();
-		}
-	}
+	int lll[] = {1,2,3,4,5,5};
+	MySegmentTree::SegmentTree<> a(12345, lll);
+	MySegmentTree::SegmentTree<long long> b(12345, {1,2,3,4,5,5});
 	cout << endl;
 	return 0;
 }
