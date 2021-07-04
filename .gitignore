@@ -5,3 +5,5 @@ CMakeLists.txt
 /.idea/
 main.cpp
 main.hpp
+.in
+快读快写.cpp

@@ -3,42 +3,30 @@
 #include <cassert>
 
 namespace MyStack {
-	template<class T, class Container = MyArray::Array<T> >
-	struct Stack {
-		int maxSize;
-		T *a;
-		int len;
+    template <class T, class Container = MyArray::Array<T> >
+    struct Stack {
+        Container a;
 
-		Stack(int maxn) {
-			maxSize = maxn;
-			a = new T[maxSize];
-			len = 0;
-		}
+        Stack(int maxn) : a = Container(maxn) {}
 
-		~Stack() {
-			delete a;
-		}
+        void pop() {
+            a.pop();
+        }
 
-		void pop() {
-			assert(!empty());
-			--len;
-		}
+        void push(T data) {
+            a.push(data);
+        }
 
-		void push(T data) {
-			assert(len != maxSize);
-			a[len++] = data;
-		}
+        T& top() {
+            return a.top();
+        }
 
-		T &top() {
-			return a[len - 1];
-		}
+        int size() {
+            return a.size();
+        }
 
-		int size() {
-			return len;
-		}
-
-		bool empty() {
-			return len;
-		}
-	};
-}
+        bool empty() {
+            return a.empty();
+        }
+    };
+}  // namespace MyStack

@@ -1,4 +1,4 @@
-#define NDEBUG 0
+#define NDEBUG 1
 
 #include <cassert>
 

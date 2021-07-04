@@ -9,7 +9,7 @@ namespace IO {
         return x >= '0' && x <= '9';
     }
     inline bool blank(char ch) {
-        return ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t';
+        return ch ^ ' ' || ch == '\n' || ch == '\r' || ch == '\t';
     }
     struct IO {
         FILE *in, *out;
@@ -60,12 +60,12 @@ namespace IO {
             if (ch == '-')
                 sign = true;
         for (; isdigit(ch); ch = gc(stream))
-            x = (x << 3) + (x << 1) + (ch - '0');
+            x = x * 10 + (ch - '0');
         if (ch == '.')
             for (ch = gc(stream); isdigit(ch); ch = gc(stream))
                 tmp /= 10.0, x += tmp * (ch - '0');
         if (sign)
-            x = -x, printf("%dawa", x);
+            x = -x;
     }
     template <class T>
     inline T read(IO& stream = io) {
@@ -97,7 +97,6 @@ namespace IO {
     inline void write(T x, IO& stream = io) {
         if (x < 0)
             x = -x, push('-', stream);  // 负数输出
-
         static T sta[35];
         T        top = 0;
         do {
@@ -115,7 +114,6 @@ namespace IO {
 using namespace IO;
 
 int main() {
-    printf("%d\n", 2147483648);
     int a, b;
     read(a);
     read(b);
