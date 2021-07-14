@@ -17,6 +17,11 @@ namespace MyLinkedList {
         Node<T>* cache;
         int      cachePosition;
         LinkedList() : len(0), head(NULL), cache(NULL) {}
+        ~LinkedList() {
+            while (!empty()) {
+                erase(0);
+            }
+        }
         Node<T>* find(int position) {
             assert(position < len);
             if (!cache)
@@ -117,10 +122,9 @@ int main() {
     a.push_front(2);
     a.pop_front();
     a.pop_back();
-//    a.pop_front();
+    //    a.pop_front();
     a.push_front(12);
-    std::cout << a[0] << std::endl
-              << a.size() << std::endl;
+    std::cout << a[0] << std::endl << a.size() << std::endl;
 }
 
 //
