@@ -1,6 +1,7 @@
 #define NDEBUG 0
 
 #include <cassert>
+#include <cstdio>
 
 namespace MyStack {
     template <class T, class Container = MyArray::Array<T> >
@@ -30,3 +31,4 @@ namespace MyStack {
         }
     };
 }  // namespace MyStack
+

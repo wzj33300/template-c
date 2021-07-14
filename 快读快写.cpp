@@ -1,4 +1,4 @@
-#define NDEBUG  // 在调试时请注释
+//#define NDEBUG  // 在调试时请注释
 #include <cstdio>
 #include <iostream>
 namespace IO {
@@ -9,7 +9,7 @@ namespace IO {
         return x >= '0' && x <= '9';
     }
     inline bool blank(char ch) {
-        return ch ^ ' ' || ch == '\n' || ch == '\r' || ch == '\t';
+        return ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t';
     }
     struct IO {
         FILE *in, *out;
@@ -60,7 +60,7 @@ namespace IO {
             if (ch == '-')
                 sign = true;
         for (; isdigit(ch); ch = gc(stream))
-            x = x * 10 + (ch - '0');
+            x = (x << 3) + (x << 1) + (ch - '0');
         if (ch == '.')
             for (ch = gc(stream); isdigit(ch); ch = gc(stream))
                 tmp /= 10.0, x += tmp * (ch - '0');
@@ -97,13 +97,14 @@ namespace IO {
     inline void write(T x, IO& stream = io) {
         if (x < 0)
             x = -x, push('-', stream);  // 负数输出
+
         static T sta[35];
-        T        top = 0;
+        int      top = 0;
         do {
             sta[top++] = x % 10, x /= 10;
         } while (x);
         while (top)
-            push(sta[--top] + '0', stream);
+            push(abs(sta[--top]) + '0', stream);
     }
     template <class T>
     inline void write(T x, char lastChar, IO& stream = io) {

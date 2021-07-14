@@ -1,150 +1,208 @@
-#define NDEBUG  // 在调试时请注释
-#include <cstdio>
+//#define NDEBUG
+#include <cassert>
 #include <iostream>
-namespace IO {
-#ifdef NDEBUG
-    const int MAXSIZE = (1 << 20);
-#endif
-    inline bool isdigit(char x) {
-        return x >= '0' && x <= '9';
-    }
-    inline bool blank(char ch) {
-        return ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t';
-    }
-    struct IO {
-        FILE *in, *out;
-#ifdef NDEBUG
-        char buf[MAXSIZE], *p1, *p2;
-        char pbuf[MAXSIZE], *pp;
-
-        IO(FILE* _in = stdin, FILE* _out = stdout)
-            : p1(buf), p2(buf), pp(pbuf), in(_in), out(_out) {}
-        ~IO() {
-            fwrite(pbuf, 1, pp - pbuf, out);
+namespace MyLinkedList {
+    template <class T>
+    struct Node {
+        T        data;
+        Node<T>* next;  // 后续
+        Node<T>* prev;  // 前驱
+        Node(T _data, Node<T>* _next = NULL, Node<T>* _prev = NULL)
+            : data(_data), next(_next), prev(_prev) {}
+    };
+    template <class T>
+    struct LinkedList {
+        int      len;
+        Node<T>* head;
+        Node<T>* cache;
+        int      cachePosition;
+        LinkedList() : len(0), head(NULL), cache(NULL) {}
+        Node<T>* find(int position) {
+            assert(position < len);
+            if (!cache)
+                cache = head, cachePosition = 0;
+            Node<T>* q;
+            int      cnt = 0;
+            int      _a = position - cachePosition, _b = position;
+            if (abs(_a) >= abs(_b)) {
+                q = head;
+                while (q->next != NULL && cnt++ != _b) {
+                    q = q->next;
+                }
+            } else {
+                q = cache;
+                if (_a < 0) {
+                    while (q->prev != NULL && cnt++ != _a) {
+                        q = q->prev;
+                    }
+                } else {
+                    while (q->next != NULL && cnt++ != _a) {
+                        q = q->next;
+                    }
+                }
+            }
+            return cache = q;
         }
-#else
-        IO(FILE* _in = stdin, FILE* _out = stdout) : in(_in), out(_out) {}
-#endif
-    } io;
+        void insert(T data, int position) {
+            assert(position <= len);
+            if (position == 0) {  // 头部插入
+                if (!head) {
+                    head = new Node<T>(data, NULL, NULL);
+                    ++len;
+                    return;
+                }
 
-    inline char gc(IO& stream = io) {
-#ifndef NDEBUG
-        return getc(stream.in);
-#else
-        if (stream.p1 == stream.p2)
-            stream.p2 = (stream.p1 = stream.buf)
-                        + fread(stream.buf, 1, MAXSIZE, stream.in);
-        return stream.p1 == stream.p2 ? ' ' : *stream.p1++;
-#endif
-    }
-
-    inline void read(char* s, IO& stream = io) {  //字符数组
-        register char ch = gc(stream);
-        for (; blank(ch); ch = gc(stream))
-            ;
-        for (; !blank(ch); ch = gc(stream))
-            *s++ = ch;
-        *s = 0;
-    }
-    inline void read(char& c, IO& stream = io) {
-        for (c = gc(stream); blank(c); c = gc(stream))
-            ;
-    }
-    template <class T>
-    inline void read(T& x, IO& stream = io) {
-        register double tmp  = 1;
-        register bool   sign = false;
-        x                    = 0;
-        register char ch     = gc(stream);
-        for (; !isdigit(ch); ch = gc(stream))
-            if (ch == '-')
-                sign = true;
-        for (; isdigit(ch); ch = gc(stream))
-            x = (x << 3) + (x << 1) + (ch - '0');
-        if (ch == '.')
-            for (ch = gc(stream); isdigit(ch); ch = gc(stream))
-                tmp /= 10.0, x += tmp * (ch - '0');
-        if (sign)
-            x = -x, printf("%dawa", x);
-    }
-    template <class T>
-    inline T read(IO& stream = io) {
-        T x;
-        read<T>(x);
-        return x;
-    }
-
-    inline void push(const char& c, IO& stream = io) {
-#ifndef NDEBUG
-        putc(c, stream.out);
-#else
-        if (stream.pp - stream.pbuf == MAXSIZE)
-            fwrite(stream.pbuf, 1, MAXSIZE, stream.out),
-                stream.pp = stream.pbuf;
-        *stream.pp++ = c;
-#endif
-    }
-
-    inline void write(char* s, IO& stream = io) {
-        for (int i = 0; s[i]; i++) {
-            push(s[i], stream);
+                Node<T>* a = new Node<T>(data, head, NULL);
+                head->prev = a;
+                head       = a;
+            } else {
+                Node<T>* q = find(position - 1);
+                q->next    = new Node<T>(data, q->next, q);
+            }
+            ++len;
         }
-    }
-    inline void write(char c, IO& stream = io) {
-        push(c, stream);
-    }
-    template <class T>
-    inline void write(T x, IO& stream = io) {
-        if (x < 0)
-            x = -x, push('-', stream);  // 负数输出
-
-        static T sta[35];
-        T        top = 0;
-        do {
-            sta[top++] = x % 10, x /= 10;
-        } while (x);
-        while (top)
-            push(sta[--top] + '0', stream);
-    }
-    template <class T>
-    inline void write(T x, char lastChar, IO& stream = io) {
-        write(x), push(lastChar, stream);
-    }
-}  // namespace IO
-
-using namespace IO;
+        void push_back(T data) {
+            insert(data, len);
+        }
+        void push_front(T data) {
+            insert(data, 0);
+        }
+        void erase(int position) {
+            assert(position < len);
+            if (position == 0) {
+                if (len == 1) {
+                    head  = NULL;
+                    cache = NULL;
+                    --len;
+                    return;
+                }
+                head = head->next;
+                delete head->prev;
+                head->prev = NULL;
+            } else {
+                Node<T>* q = find(position - 1);
+                q->next    = q->next->next;
+                delete q->next->prev;
+                q->next->prev = q;
+            }
+            --len;
+        }
+        void pop_back() {
+            erase(len - 1);
+        }
+        void pop_front() {
+            erase(0);
+        }
+        T& operator[](int position) {
+            return find(position)->data;
+        }
+        int size() {
+            return len;
+        }
+        bool empty() {
+            return !len;
+        }
+        T& front() {
+            return find(len - 1)->data;
+        }
+        T& back() {
+            return find(0)->data;
+        }
+    };
+}  // namespace MyLinkedList
 
 int main() {
-    printf("%d\n", 2147483648);
-    int a, b;
-    read(a);
-    read(b);
-    write(a + b, '\n');
+    MyLinkedList::LinkedList<int> a;
+    a.push_back(1);
+    a.push_front(2);
+    a.pop_front();
+    a.pop_back();
+//    a.pop_front();
+    a.push_front(12);
+    std::cout << a[0] << std::endl
+              << a.size() << std::endl;
 }
 
-//#define NDEBUG
-//#include <cstdio>
+//
 //#include <iostream>
-//namespace IO {
-//#ifdef NDEBUG
-//    const int MAXSIZE = (1 << 10);
-//#endif
-//    inline bool isdigit(char x) {return x >= '0' && x <= '9';}inline bool blank(char ch) {return ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t';}struct IO {FILE *in, *out;
-//#ifdef NDEBUG
-//        char buf[MAXSIZE], *p1, *p2;char pbuf[MAXSIZE], *pp;IO(FILE* _in = stdin, FILE* _out = stdout): p1(buf), p2(buf), pp(pbuf), in(_in), out(_out) {}~IO() {fwrite(pbuf, 1, pp - pbuf, out);}
-//#else
-//        IO(FILE* _in = stdin, FILE* _out = stdout) : in(_in), out(_out) {}
-//#endif
-//    } io;inline char gc(IO& stream = io) {
-//#ifndef NDEBUG
-//        return getc(stream.in);
-//#else
-//        if (stream.p1 == stream.p2)stream.p2 = (stream.p1 = stream.buf)+ fread(stream.buf, 1, MAXSIZE, stream.in);return stream.p1 == stream.p2 ? ' ' : *stream.p1++;
-//#endif
-//    }inline void read(char* s, IO& stream = io) {  register char ch = gc(stream);for (; blank(ch); ch = gc(stream));for (; !blank(ch); ch = gc(stream))*s++ = ch;*s = 0;}inline void read(char& c, IO& stream = io) {for (c = gc(stream); blank(c); c = gc(stream));}template <class T>inline void read(T& x, IO& stream = io) {register double tmp  = 1;register bool   sign = false;x                    = 0;register char ch     = gc(stream);for (; !isdigit(ch); ch = gc(stream))if (ch == '-')sign = true;for (; isdigit(ch); ch = gc(stream))x = x * 10 + (ch - '0');if (ch == '.')for (ch = gc(stream); isdigit(ch); ch = gc(stream))tmp /= 10.0, x += tmp * (ch - '0');if (sign)x = -x;}template <class T>inline T read(IO& stream = io) {T x;read<T>(x);return x;}inline void push(const char& c, IO& stream = io) {
-//#ifndef NDEBUG
-//        putc(c, stream.out);
-//#else
-//        if (stream.pp - stream.pbuf == MAXSIZE)fwrite(stream.pbuf, 1, MAXSIZE, stream.out),stream.pp = stream.pbuf;*stream.pp++ = c;
-//#endif
-//    }inline void write(char* s, IO& stream = io) {for (int i = 0; s[i]; i++) {push(s[i], stream);}}inline void write(char c, IO& stream = io) {push(c, stream);}template <class T>inline void write(T x, IO& stream = io) {if (x < 0)x = -x, push('-', stream);  static T sta[35];T        top = 0;do {sta[top++] = x % 10, x /= 10;} while (x);while (top)push(sta[--top] + '0', stream);}template <class T>inline void write(T x, char lastChar, IO& stream = io) {write(x), push(lastChar, stream);}}  using namespace IO;int main() {int a, b;read(a);read(b);write(a + b, '\n');}
+//#include <cstdio>
+//#include <ctime>
+// template <class T>
+// T gcdV1(T a, T b) {
+//    T _temp;
+//    while (b != 0) {
+//        _temp = a;
+//        a = b;
+//        b = _temp % b;
+//    }
+//    return a;
+//}
+// template <class T>
+// T gcdV2(T a, T b) {
+//    while (a != b) {
+//        int big = a > b?a:b;
+//        int small = a < b?a:b;
+//        a = big - small;
+//        b = small;
+//    }
+//    return a;
+//
+//
+//}
+// template <class T>
+// T gcdV3(T a, T b) {
+//    long long _temp = 0;
+//    while (a != b) {
+//        int _aaa = a & 1, _bbb = b & 1;
+//        if (_aaa == 0) {
+//            if (_bbb == 0)
+//                a >>= 1, b >>= 1, ++_temp;
+//            else
+//                a >>= 1;
+//        } else {
+//            if (_bbb == 0)
+//                b >>= 1;
+//            else {
+//                int _big = a > b ? a : b, _small = a < b ? a : b;
+//                a = _big - _small, b = _small;
+//            }
+//        }
+//    }
+//    return a << _temp;
+//}
+//
+// template <class T>
+// void swapa(T& a, T& b) {
+//    T _temp = a;
+//    a = b;
+//    b = _temp;
+//}
+// template <class T>
+// T gcdV4(T a, T b) {
+//    long long r = 0;
+//    while (true) {
+//        if (!a || !b)
+//            return (a + b) << r;
+//        while ((a & 1) == 0 && (b & 1) == 0)
+//            ++r, a >>= 1, b >>= 1;
+//        while ((a & 1) == 0)
+//            a >>= 1;
+//        while ((b & 1) == 0)
+//            b >>= 1;
+//        if (a < b)
+//            swapa(a, b);
+//        a -= b;
+//    }
+//}
+//
+// int main() {
+//    std::cout << gcdV4(121310,5315353);
+//    long long a, b;
+//    system(R"(C:\Users\wzj\OneDrive\VScode\template-c\template_c.exe)");
+//    freopen(R"(C:\Users\wzj\OneDrive\VScode\template-c\cmake-build-debug\.out)",
+//    "r", stdin); std::cin >> a >> b; time_t t = clock();
+//
+//}
+//
+//// 1 1 2 3 5 8 13 21 34 55
+//
