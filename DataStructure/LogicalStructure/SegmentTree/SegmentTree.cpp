@@ -11,7 +11,7 @@ namespace MySegmentTree {
         Node(int L, int R, T DATA) : l(L), r(R), data(DATA) {}
     };
 
-    template<class T = int>
+    template<class T>
     struct SegmentTree {
         int maxSize;
         Node<T> *a;
@@ -32,7 +32,7 @@ namespace MySegmentTree {
             build(l, m, p << 1), build(m + 1, r, (p << 1) + 1);
             a[p] = a[p << 1] + a[(p << 1) + 1];
         }
-
+        
 
     };
 }
