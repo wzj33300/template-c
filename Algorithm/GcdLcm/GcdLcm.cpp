@@ -2,14 +2,14 @@
 
 #include <cassert>
 
-namespace MyGcdLcm{
+namespace MyGcdLcm {
     template <class T>
     T gcd(T a, T b) {
         T _temp;
         while (b != 0) {
             _temp = a;
-            a = b;
-            b = _temp % b;
+            a     = b;
+            b     = _temp % b;
         }
         return a;
     }
@@ -18,8 +18,8 @@ namespace MyGcdLcm{
     T lcm(T a, T b) {
         return a / gcd(a, b) * b;
     }
-}
+}  // namespace MyGcdLcm
 
-int main () {
+int main() {
     MyGcdLcm::gcd(5, 3);
 }

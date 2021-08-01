@@ -8,7 +8,8 @@ namespace MyStack {
     struct Stack {
         Container a;
 
-        Stack(int maxn) : a = Container(maxn) {}
+        Stack(int maxn)
+            : a = Container(maxn) {}
 
         void pop() {
             a.pop();
@@ -31,4 +32,3 @@ namespace MyStack {
         }
     };
 }  // namespace MyStack
-

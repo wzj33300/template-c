@@ -13,7 +13,7 @@
 using namespace std;
 
 enum RBTColor { RED,
-    BLACK };
+                BLACK };
 
 template <class T>
 class RBTNode {
@@ -202,7 +202,7 @@ RBTNode<T>* RBTree<T>::Search(RBTNode<T>* x, T key) const {
 
 template <class T>
 RBTNode<T>* RBTree<T>::Search(T key) {
-    Search(mRoot, key);
+    return Search(mRoot, key);
 }
 
 /*
@@ -222,7 +222,7 @@ RBTNode<T>* RBTree<T>::IterativeSearch(RBTNode<T>* x, T key) const {
 
 template <class T>
 RBTNode<T>* RBTree<T>::IterativeSearch(T key) {
-    IterativeSearch(mRoot, key);
+    return IterativeSearch(mRoot, key);
 }
 
 /*
@@ -357,7 +357,7 @@ void RBTree<T>::LeftRotate(RBTNode<T>*& root, RBTNode<T>* x) {
 /*
  * 对红黑树的节点(y)进行右旋转
  *
- * 右旋示意图(对节点y进行左旋)：
+ * 右旋示意图(对节点y进行右旋)：
  *            py                               py
  *           /                                /
  *          y                                x
@@ -613,7 +613,7 @@ void RBTree<T>::RemoveFixUp(RBTNode<T>*& root, RBTNode<T>* node, RBTNode<T>* par
 }
 
 /*
- * 删除结点(node)，并返回被删除的结点
+ * 删除结点(node)，并返回被删除的结点(当有多个节点符合条件时，删除最靠近root的(最早插入的))
  *
  * 参数说明：
  *     root 红黑树的根结点

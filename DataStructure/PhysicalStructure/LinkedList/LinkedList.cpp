@@ -16,7 +16,8 @@ namespace MyLinkedList {
         Node<T>* head;
         Node<T>* cache;
         int      cachePosition;
-        LinkedList() : len(0), head(NULL), cache(NULL) {}
+        LinkedList()
+            : len(0), head(NULL), cache(NULL) {}
         ~LinkedList() {
             while (!empty()) {
                 erase(0);
@@ -124,5 +125,6 @@ int main() {
     a.pop_back();
     //    a.pop_front();
     a.push_front(12);
-    std::cout << a[0] << std::endl << a.size() << std::endl;
+    std::cout << a[0] << std::endl
+              << a.size() << std::endl;
 }

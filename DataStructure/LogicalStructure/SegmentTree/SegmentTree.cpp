@@ -3,20 +3,22 @@
 #include <cassert>
 
 namespace MySegmentTree {
-    template<class T>
+    template <class T>
     struct Node {
         int l, r;
-        T data;
+        T   data;
 
-        Node(int L, int R, T DATA) : l(L), r(R), data(DATA) {}
+        Node(int L, int R, T DATA)
+            : l(L), r(R), data(DATA) {}
     };
 
-    template<class T>
+    template <class T>
     struct SegmentTree {
-        int maxSize;
-        Node<T> *a;
+        int      maxSize;
+        Node<T>* a;
 
-        SegmentTree(int maxn, T *data) : maxSize(maxn), a(new Node<T>[maxn << 2]) {
+        SegmentTree(int maxn, T* data)
+            : maxSize(maxn), a(new Node<T>[maxn << 2]) {
             build(1, maxn, 1, data);
         }
 
@@ -24,7 +26,7 @@ namespace MySegmentTree {
             delete a;
         }
 
-        void build(int l, int r, int p, T *data) {
+        void build(int l, int r, int p, T* data) {
             if (l == r) {
                 a[p] = data[l];
             }
@@ -32,9 +34,5 @@ namespace MySegmentTree {
             build(l, m, p << 1), build(m + 1, r, (p << 1) + 1);
             a[p] = a[p << 1] + a[(p << 1) + 1];
         }
-        
-
     };
-}
-
-
+}  // namespace MySegmentTree

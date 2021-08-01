@@ -1,6 +1,6 @@
-#include <algorithm>
-#include <cstdlib>
-#include <ctime>
+#ifndef _AVL_TREE_HPP_
+#define _AVL_TREE_HPP_
+
 #include <iostream>
 
 using namespace std;
@@ -25,8 +25,8 @@ public:
     bool Insert(T x) {
         return Insert(root, x);
     }
-    bool Delete(T x) {
-        return Delete(root, x);
+    bool Remove(T x) {
+        return Remove(root, x);
     }
     BSTNode<T>* Search(const T& x) {
         return Search(root, x);
@@ -47,9 +47,9 @@ public:
 private:
     BSTNode<T>* root;
     /*
-	å‡½æ•°ï¼šé‡Šæ”¾bstæ ‘
-	å‚æ•°ï¼šæ ‘çš„æ ¹æŒ‡é’ˆ
-	è¿”å›å€¼ï¼šç©º
+	º¯Êı£ºÊÍ·ÅbstÊ÷
+	²ÎÊı£ºÊ÷µÄ¸ùÖ¸Õë
+	·µ»ØÖµ£º¿Õ
     */
     void        Release(BSTNode<T>* bst) {
         if (bst != NULL) {
@@ -59,17 +59,17 @@ private:
         }
     }
     /*
-	å‡½æ•°ï¼šè·å–æ ‘çš„é«˜åº¦ï¼ˆæ ‘æ ¹é«˜åº¦ä¸º0ï¼‰
-	å‚æ•°ï¼šbstï¼šæ ‘çš„æ ¹æŒ‡é’ˆ
-	è¿”å›å€¼ï¼šæ ‘çš„é«˜åº¦
+	º¯Êı£º»ñÈ¡Ê÷µÄ¸ß¶È£¨Ê÷¸ù¸ß¶ÈÎª0£©
+	²ÎÊı£ºbst£ºÊ÷µÄ¸ùÖ¸Õë
+	·µ»ØÖµ£ºÊ÷µÄ¸ß¶È
     */
     inline int Height(BSTNode<T>* bst) {
         return (bst == NULL ? -1 : bst->h);
     }
     /*
-	å‡½æ•°ï¼šæ’å…¥x
-	å‚æ•°ï¼šbstï¼šæ ‘çš„æ ¹æŒ‡é’ˆï¼Œè¿›è¡Œè°ƒæ•´çš„æ—¶å€™ä¼šä¿®æ”¹å…¶å€¼ï¼Œæ•…ç”¨å¼•ç”¨    xï¼šè¦æ’å…¥çš„å€¼
-	è¿”å›å€¼ï¼šæ˜¯å¦æˆåŠŸæ’å…¥
+	º¯Êı£º²åÈëx
+	²ÎÊı£ºbst£ºÊ÷µÄ¸ùÖ¸Õë£¬½øĞĞµ÷ÕûµÄÊ±ºò»áĞŞ¸ÄÆäÖµ£¬¹ÊÓÃÒıÓÃ    x£ºÒª²åÈëµÄÖµ
+	·µ»ØÖµ£ºÊÇ·ñ³É¹¦²åÈë
     */
     bool Insert(BSTNode<T>*& bst, const T& x) {
         if (bst == NULL) {
@@ -80,7 +80,7 @@ private:
             }
             bst->h = max(Height(bst->lchild), Height(bst->rchild)) + 1;
             return true;
-        } else if (x < bst->data) {
+        } else if (x <= bst->data) {
             bool r = Insert(bst->lchild, x);
             if (Height(bst->lchild) - Height(bst->rchild) == 2) {
                 if (x < bst->lchild->data)
@@ -102,23 +102,24 @@ private:
             }
             bst->h = max(Height(bst->lchild), Height(bst->rchild)) + 1;
             return r;
-        } else {
-            cout << "æ’å…¥å…ƒç´ å·²ç»å­˜åœ¨ï¼ï¼ï¼" << endl;
+        } /* else {
+            cout << "²åÈëÔªËØÒÑ¾­´æÔÚ£¡£¡£¡" << endl;
             return false;
-        }
+        }*/
+        return false;
     }
 
     /*
-	    å‡½æ•°ï¼šåˆ é™¤å€¼ä¸ºxçš„èŠ‚ç‚¹
-    	å‚æ•°ï¼šbstï¼šæ ‘æ ¹æŒ‡é’ˆï¼Œè¿›è¡Œè°ƒæ•´çš„æ—¶å€™ä¼šä¿®æ”¹å…¶å€¼ï¼Œæ•…ç”¨å¼•ç”¨    xï¼šè¦åˆ é™¤çš„å€¼
-    	è¿”å›å€¼ï¼šæ˜¯å¦æˆåŠŸåˆ é™¤
+	    º¯Êı£ºÉ¾³ıÖµÎªxµÄ½Úµã(µ±ÓĞ¶à¸ö½Úµã·ûºÏÌõ¼şÊ±£¬É¾³ı×î¿¿½übstµÄ(×îÔç²åÈëµÄ))
+    	²ÎÊı£ºbst£ºÊ÷¸ùÖ¸Õë£¬½øĞĞµ÷ÕûµÄÊ±ºò»áĞŞ¸ÄÆäÖµ£¬¹ÊÓÃÒıÓÃ    x£ºÒªÉ¾³ıµÄÖµ
+    	·µ»ØÖµ£ºÊÇ·ñ³É¹¦É¾³ı
     */
-    bool Delete(BSTNode<T>*& bst, const T& x) {
+    bool Remove(BSTNode<T>*& bst, const T& x) {
         if (bst == NULL) {
-            cout << "åˆ é™¤å…ƒç´ ä¸å­˜åœ¨ï¼ï¼ï¼" << endl;
+            cout << "É¾³ıÔªËØ²»´æÔÚ£¡£¡£¡" << endl;
             return false;
         } else if (x < bst->data) {
-            bool r = Delete(bst->lchild, x);
+            bool r = Remove(bst->lchild, x);
             if (Height(bst->lchild) - Height(bst->rchild) == -2) {
                 if (Height(bst->lchild) - Height(bst->rchild->rchild) == -1)
                     SingleRotateWithRight(bst);
@@ -128,7 +129,7 @@ private:
             bst->h = max(Height(bst->lchild), Height(bst->rchild)) + 1;
             return r;
         } else if (x > bst->data) {
-            bool r = Delete(bst->rchild, x);
+            bool r = Remove(bst->rchild, x);
             if (Height(bst->lchild) - Height(bst->rchild) == 2) {
                 if (Height(bst->lchild->lchild) - Height(bst->rchild) == 1)
                     SingleRotateWithLeft(bst);
@@ -155,9 +156,9 @@ private:
                     p = p->lchild;
                 }
                 bst->data = p->data;
-                if (p == bst->rchild)  //ç‰¹æ®Šæƒ…å†µ
+                if (p == bst->rchild)  //ÌØÊâÇé¿ö
                     bst->rchild = p->rchild;
-                else {  //ä¸€èˆ¬æƒ…å†µ
+                else {  //Ò»°ãÇé¿ö
                     bst->rchild->lchild = p->rchild;
                     bst->rchild->h      = max(Height(bst->rchild->lchild), Height(bst->rchild->rchild)) + 1;
                 }
@@ -169,9 +170,9 @@ private:
         }
     }
     /*
-    	å‡½æ•°ï¼šå·¦å•æ—‹ï¼šå³LLå‹
-    	å‚æ•°ï¼šbstï¼šæœ€å°ä¸å¹³è¡¡å­æ ‘æ ¹æŒ‡é’ˆ
-    	è¿”å›å€¼ï¼šç©º
+    	º¯Êı£º×óµ¥Ğı£º¼´LLĞÍ
+    	²ÎÊı£ºbst£º×îĞ¡²»Æ½ºâ×ÓÊ÷¸ùÖ¸Õë
+    	·µ»ØÖµ£º¿Õ
     */
     void SingleRotateWithLeft(BSTNode<T>*& bst) {
         BSTNode<T>* t = bst->lchild;
@@ -183,9 +184,9 @@ private:
         bst           = t;
     }
     /*
-        å‡½æ•°ï¼šå³å•æ—‹ï¼šå³RRå‹
-        å‚æ•°ï¼šbstï¼šæœ€å°ä¸å¹³è¡¡å­æ ‘æ ¹æŒ‡é’ˆ
-        è¿”å›å€¼ï¼šç©º
+        º¯Êı£ºÓÒµ¥Ğı£º¼´RRĞÍ
+        ²ÎÊı£ºbst£º×îĞ¡²»Æ½ºâ×ÓÊ÷¸ùÖ¸Õë
+        ·µ»ØÖµ£º¿Õ
     */
     void SingleRotateWithRight(BSTNode<T>*& bst) {
         BSTNode<T>* t = bst->rchild;
@@ -197,27 +198,27 @@ private:
         bst           = t;
     }
     /*
-        å‡½æ•°ï¼šå·¦åŒæ—‹ï¼šå³LRå‹
-        å‚æ•°ï¼šbstï¼šæœ€å°ä¸å¹³è¡¡å­æ ‘æ ¹æŒ‡é’ˆ
-        è¿”å›å€¼ï¼šç©º
+        º¯Êı£º×óË«Ğı£º¼´LRĞÍ
+        ²ÎÊı£ºbst£º×îĞ¡²»Æ½ºâ×ÓÊ÷¸ùÖ¸Õë
+        ·µ»ØÖµ£º¿Õ
     */
     void DoubleRotateWithLeft(BSTNode<T>*& bst) {
         SingleRotateWithRight(bst->lchild);
         SingleRotateWithLeft(bst);
     }
     /*
-        å‡½æ•°ï¼šå³åŒæ—‹ï¼šå³RLå‹
-        å‚æ•°ï¼šbstï¼šæœ€å°ä¸å¹³è¡¡å­æ ‘æ ¹æŒ‡é’ˆ
-        è¿”å›å€¼ï¼šç©º
+        º¯Êı£ºÓÒË«Ğı£º¼´RLĞÍ
+        ²ÎÊı£ºbst£º×îĞ¡²»Æ½ºâ×ÓÊ÷¸ùÖ¸Õë
+        ·µ»ØÖµ£º¿Õ
     */
     void DoubleRotateWithRight(BSTNode<T>*& bst) {
         SingleRotateWithLeft(bst->rchild);
         SingleRotateWithRight(bst);
     }
     /*
-        å‡½æ•°ï¼šæœç´¢x
-        å‚æ•°ï¼šbstï¼šæ ¹èŠ‚ç‚¹æŒ‡é’ˆ    x:è¦æœç´¢çš„å€¼ï¼Œæœç´¢æˆåŠŸååå›èŠ‚ç‚¹å€¼
-        è¿”å›å€¼ï¼šæœç´¢æˆåŠŸï¼Œè¿”å›æŒ‡å‘è¯¥èŠ‚ç‚¹çš„æŒ‡é’ˆï¼›æœç´¢å¤±è´¥è¿”å›NULL
+        º¯Êı£ºËÑË÷x
+        ²ÎÊı£ºbst£º¸ù½ÚµãÖ¸Õë    x:ÒªËÑË÷µÄÖµ£¬ËÑË÷³É¹¦ºó·´»Ø½ÚµãÖµ
+        ·µ»ØÖµ£ºËÑË÷³É¹¦£¬·µ»ØÖ¸Ïò¸Ã½ÚµãµÄÖ¸Õë£»ËÑË÷Ê§°Ü·µ»ØNULL
     */
     BSTNode<T>* Search(BSTNode<T>* bst, const T& x) {
         if (bst == NULL)
@@ -230,15 +231,15 @@ private:
             return Search(bst->lchild, x);
     }
     /*
-        å‡½æ•°ï¼šä¿®æ”¹èŠ‚ç‚¹å€¼
-        å‚æ•°ï¼šxï¼šæŠŠèŠ‚ç‚¹å€¼ä¸ºidçš„èŠ‚ç‚¹çš„èŠ‚ç‚¹å€¼ä¿®æ”¹ä¸ºx
-        è¿”å›å€¼ï¼šæ˜¯å¦æˆåŠŸä¿®æ”¹
+        º¯Êı£ºĞŞ¸Ä½ÚµãÖµ
+        ²ÎÊı£ºx£º°Ñ½ÚµãÖµÎªidµÄ½ÚµãµÄ½ÚµãÖµĞŞ¸ÄÎªx
+        ·µ»ØÖµ£ºÊÇ·ñ³É¹¦ĞŞ¸Ä
     */
     bool Modify(BSTNode<T>* bst, const T& id, const T& x) {
-        return ((Delete(bst, id)) && (Insert(bst, x)));
+        return ((Remove(bst, id)) && (Insert(bst, x)));
     }
     /*
-        å‰åºéå†
+        Ç°Ğò±éÀú
     */
     void PreOrder(BSTNode<T>* bst, void visit(const T& x)) {
         if (bst != NULL) {
@@ -248,7 +249,7 @@ private:
         }
     }
     /*
-        ä¸­åºéå†
+        ÖĞĞò±éÀú
     */
     void InOrder(BSTNode<T>* bst, void visit(const T& x)) {
         if (bst != NULL) {
@@ -258,7 +259,7 @@ private:
         }
     }
     /*
-        ååºéå†
+        ºóĞò±éÀú
     */
     void PostOrder(BSTNode<T>* bst, void visit(const T& x)) {
         if (bst != NULL) {
@@ -268,3 +269,5 @@ private:
         }
     }
 };
+
+#endif

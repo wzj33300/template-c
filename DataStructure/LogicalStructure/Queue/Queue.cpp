@@ -13,9 +13,9 @@ namespace MyQueue {
         }
 
         Queue<T>& operator=(const Queue<T>& other) {
-            a       = other.a;
-            head    = other.head;
-            tail    = other.tail;
+            a    = other.a;
+            head = other.head;
+            tail = other.tail;
         }
 
         void pop() {

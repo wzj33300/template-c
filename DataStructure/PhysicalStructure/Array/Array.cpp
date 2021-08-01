@@ -3,22 +3,23 @@
 #include <cassert>
 
 namespace MyArray {
-    template<class T>
+    template <class T>
     struct Array {
-        T *a;
+        T*  a;
         int len;
         int maxSize;
 
-        Array(int maxn) : a(new T[maxn]), len(0), maxSize(maxn) {}
+        Array(int maxn)
+            : a(new T[maxn]), len(0), maxSize(maxn) {}
 
         ~Array() {
             delete[] a;
         }
 
-        void insert(T data, int position) { // 插入到location位置, 后面的元素后移
+        void insert(T data, int position) {  // 插入到location位置, 后面的元素后移
             assert(position <= len);
             assert(len < maxSize);
-            for (int i = len - 1; i <= position; --i){
+            for (int i = len - 1; i <= position; --i) {
                 a[i + 1] = a[i];
             }
             ++len;
@@ -33,7 +34,7 @@ namespace MyArray {
             insert(data, 0);
         }
 
-        void erase(int position) { // 删除location位置
+        void erase(int position) {  // 删除location位置
             assert(len != 0);
             for (int i = position + 1; i < len; ++i) {
                 a[i - 1] = a[i];
@@ -53,7 +54,7 @@ namespace MyArray {
             return a[at];
         }
 
-        T &at(int at) {
+        T& at(int at) {
             assert(at < len);
             return a[at];
         }
@@ -66,12 +67,12 @@ namespace MyArray {
             return !len;
         }
 
-        T &front() {
+        T& front() {
             return a[0];
         }
 
-        T &back() {
+        T& back() {
             return a[len - 1];
         }
     };
-}
+}  // namespace MyArray

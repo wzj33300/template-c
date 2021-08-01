@@ -262,8 +262,8 @@
 
 #include <algorithm>
 #include <cstdlib>
-#include <iostream>
 #include <ctime>
+#include <iostream>
 
 using namespace std;
 
@@ -287,7 +287,7 @@ public:
     bool Insert(T x) {
         return Insert(root, x);
     }
-    bool Delete(T x) {
+    bool Remove(T x) {
         return Delete(root, x);
     }
     BSTNode<T>* Search(const T& x) {
@@ -313,7 +313,7 @@ private:
 	参数：树的根指针
 	返回值：空
     */
-    void Release(BSTNode<T>* bst) {
+    void        Release(BSTNode<T>* bst) {
         if (bst != NULL) {
             Release(bst->lchild);
             Release(bst->rchild);
@@ -375,7 +375,7 @@ private:
     	参数：bst：树根指针，进行调整的时候会修改其值，故用引用    x：要删除的值
     	返回值：是否成功删除
     */
-    bool Delete(BSTNode<T>*& bst, const T& x) {
+    bool Remove(BSTNode<T>*& bst, const T& x) {
         if (bst == NULL) {
             cout << "删除元素不存在！！！" << endl;
             return false;
@@ -536,7 +536,7 @@ int main() {
     AVLTree<int> avlTree;
     avlTree.Insert(1);
     avlTree.Insert(3);
-    cout << avlTree.Search(3) -> h << endl;
+    cout << avlTree.Search(3)->h << endl;
     cout << avlTree.Height() << endl;
     avlTree.Delete(3);
     avlTree.Modify(1, 2);

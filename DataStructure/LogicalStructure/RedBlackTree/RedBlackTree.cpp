@@ -4,74 +4,78 @@
 
 #include "RedBlackTree.hpp"
 /**
- * C++ è¯­è¨€: äºŒå‰æŸ¥æ‰¾æ ‘
+ * C++ ÓïÑÔ: ¶ş²æ²éÕÒÊ÷
  *
- * @author skywang
- * @date 2013/11/07
+ * @author wzj
+ * @date 2021/07/31
  */
 
 #include <iostream>
 using namespace std;
 
-int main()
-{
-    int a[]= {10, 40, 30, 60, 90, 70, 20, 50, 80};
-    int check_insert=0;    // "æ’å…¥"åŠ¨ä½œçš„æ£€æµ‹å¼€å…³(0ï¼Œå…³é—­ï¼›1ï¼Œæ‰“å¼€)
-    int check_remove=0;    // "åˆ é™¤"åŠ¨ä½œçš„æ£€æµ‹å¼€å…³(0ï¼Œå…³é—­ï¼›1ï¼Œæ‰“å¼€)
-    int i;
-    int ilen = (sizeof(a)) / (sizeof(a[0])) ;
-    RBTree<int>* tree=new RBTree<int>();
+int main() {
+    int   a[]          = { 10, 40, 30, 60, 90, 70, 20, 50, 80, 10 };
+    int   check_insert = 1;  // "²åÈë"¶¯×÷µÄ¼ì²â¿ª¹Ø(0£¬¹Ø±Õ£»1£¬´ò¿ª)
+    int   check_remove = 1;  // "É¾³ı"¶¯×÷µÄ¼ì²â¿ª¹Ø(0£¬¹Ø±Õ£»1£¬´ò¿ª)
+    int   i;
+    int   ilen = (sizeof(a)) / (sizeof(a[0]));
+    auto* tree = new RBTree<int>();
 
-    cout << "== åŸå§‹æ•°æ®: ";
-    for(i=0; i<ilen; i++)
-        cout << a[i] <<" ";
+    cout << "== Ô­Ê¼Êı¾İ: ";
+    for (i = 0; i < ilen; i++)
+        cout << a[i] << " ";
     cout << endl;
 
-    for(i=0; i<ilen; i++)
-    {
-        tree->insert(a[i]);
-        // è®¾ç½®check_insert=1,æµ‹è¯•"æ·»åŠ å‡½æ•°"
-        if(check_insert)
-        {
-            cout << "== æ·»åŠ èŠ‚ç‚¹: " << a[i] << endl;
-            cout << "== æ ‘çš„è¯¦ç»†ä¿¡æ¯: " << endl;
-            tree->print();
-            cout << endl;
-        }
-
-    }
-
-    cout << "== å‰åºéå†: ";
-    tree->preOrder();
-
-    cout << "\n== ä¸­åºéå†: ";
-    tree->inOrder();
-
-    cout << "\n== ååºéå†: ";
-    tree->postOrder();
-    cout << endl;
-
-    cout << "== æœ€å°å€¼: " << tree->minimum() << endl;
-    cout << "== æœ€å¤§å€¼: " << tree->maximum() << endl;
-    cout << "== æ ‘çš„è¯¦ç»†ä¿¡æ¯: " << endl;
-    tree->print();
-
-    // è®¾ç½®check_remove=1,æµ‹è¯•"åˆ é™¤å‡½æ•°"
-    if(check_remove)
-    {
-        for(i=0; i<ilen; i++)
-        {
-            tree->remove(a[i]);
-
-            cout << "== åˆ é™¤èŠ‚ç‚¹: " << a[i] << endl;
-            cout << "== æ ‘çš„è¯¦ç»†ä¿¡æ¯: " << endl;
-            tree->print();
+    for (i = 0; i < ilen - 1; i++) {
+        tree->Insert(a[i]);
+        // ÉèÖÃcheck_insert=1,²âÊÔ"Ìí¼Óº¯Êı"
+        if (check_insert) {
+            cout << "== Ìí¼Ó½Úµã: " << a[i] << endl;
+            cout << "== Ê÷µÄÏêÏ¸ĞÅÏ¢: " << endl;
+            tree->Print();
             cout << endl;
         }
     }
+    tree->Remove(10);
+    for (i = ilen - 1; i < ilen; i++) {
+        tree->Insert(a[i]);
+        // ÉèÖÃcheck_insert=1,²âÊÔ"Ìí¼Óº¯Êı"
+        if (check_insert) {
+            cout << "== Ìí¼Ó½Úµã: " << a[i] << endl;
+            cout << "== Ê÷µÄÏêÏ¸ĞÅÏ¢: " << endl;
+            tree->Print();
+            cout << endl;
+        }
+    }
+    cout << "== Ç°Ğò±éÀú: ";
+    tree->PreOrder();
 
-    // é”€æ¯çº¢é»‘æ ‘
-    tree->destroy();
+    cout << "\n== ÖĞĞò±éÀú: ";
+    tree->InOrder();
+
+    cout << "\n== ºóĞò±éÀú: ";
+    tree->PostOrder();
+    cout << endl;
+
+    cout << "== ×îĞ¡Öµ: " << tree->Minimum() << endl;
+    cout << "== ×î´óÖµ: " << tree->Maximum() << endl;
+    cout << "== Ê÷µÄÏêÏ¸ĞÅÏ¢: " << endl;
+    tree->Print();
+
+    // ÉèÖÃcheck_remove=1,²âÊÔ"É¾³ıº¯Êı"
+    if (check_remove) {
+        for (i = 0; i < ilen; i++) {
+            tree->Remove(a[i]);
+
+            cout << "== É¾³ı½Úµã: " << a[i] << endl;
+            cout << "== Ê÷µÄÏêÏ¸ĞÅÏ¢: " << endl;
+            tree->Print();
+            cout << endl;
+        }
+    }
+
+    // Ïú»ÙºìºÚÊ÷
+    tree->Destroy();
 
     return 0;
 }

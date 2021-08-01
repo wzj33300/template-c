@@ -23,7 +23,8 @@ namespace IO {
             fwrite(pbuf, 1, pp - pbuf, out);
         }
 #else
-        IO(FILE* _in = stdin, FILE* _out = stdout) : in(_in), out(_out) {}
+        IO(FILE* _in = stdin, FILE* _out = stdout)
+            : in(_in), out(_out) {}
 #endif
     } io;
 
